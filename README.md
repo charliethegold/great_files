@@ -1,14 +1,14 @@
-# I Built a Free Batch OCR Tool to Process the Epstein Files (and Any Large Document Collection)
+# Free Batch OCR Tool for Legal Document Processing
 
-**TL;DR:** Created a free, open-source desktop app that does batch OCR on thousands of images/PDFs with progress tracking, pause/resume, and smart skip for already-processed files. Perfect for the recent Epstein document releases or any large archive.
+**TL;DR:** A free, open-source desktop app that does batch OCR on thousands of images/PDFs with progress tracking, pause/resume, and smart skip for already-processed files. Built for legal professionals dealing with large document collections in discovery, FOIA requests, and case preparation.
 
 ---
 
 ## Background
 
-With the recent release of Epstein-related documents by Congress, I needed a way to OCR thousands of scanned pages to make them searchable. Commercial OCR services would cost a fortune for this volume, and existing free tools either crashed on large batches or lacked basic features like pause/resume.
+Legal practice regularly involves processing thousands of scanned pages — court filings, discovery documents, deposition exhibits, FOIA responses, and more. Commercial OCR services are expensive at scale, and existing free tools either crash on large batches or lack basic features like pause/resume.
 
-So I built this tool using Python and Tesseract OCR.
+This tool was built using Python and Tesseract OCR to handle exactly that workflow.
 
 ---
 
@@ -33,13 +33,13 @@ So I built this tool using Python and Tesseract OCR.
 
 ---
 
-## Why I Built This
+## Why This Matters for Legal Practice
 
-The Epstein files are ~2,800+ scanned documents. At ~2-5 seconds per file, that's 5.5 hours of processing. I needed:
-- A way to pause/resume (crashes happen, life happens)
-- Skip already-processed files (don't waste hours reprocessing)
+Large document productions are common in litigation. At 2–5 seconds per file, a 2,000-page document set takes several hours. This tool gives you:
+- A way to pause/resume (crashes happen, hearings happen)
+- Skip already-processed files (don't waste hours reprocessing after a restart)
 - Visual progress (sanity check for overnight runs)
-- Free and open-source (transparency matters)
+- Everything runs locally — no client data leaves your machine
 
 ---
 
@@ -60,7 +60,7 @@ The Epstein files are ~2,800+ scanned documents. At ~2-5 seconds per file, that'
 **Processing Speed:**
 - ~2 seconds per image
 - ~5 seconds per PDF page
-- Your mileage may vary based on image quality and hardware
+- Varies based on image quality and hardware
 
 ---
 
@@ -77,42 +77,33 @@ The Epstein files are ~2,800+ scanned documents. At ~2-5 seconds per file, that'
    pip install pytesseract pillow pdf2image
    ```
 
-4. Download the script: `epstein_ocr_final.py`
+4. Download the script: `legal_ocr.py`
 
 5. Run:
    ```bash
-   python3 epstein_ocr_final.py
+   python3 legal_ocr.py
    ```
 
 ---
 
 ## Usage
 
-1. **Select Folder** - Choose the folder containing your images/PDFs
+1. **Select Folder** - Choose the folder containing your scanned documents
 2. **Click Start** - The app scans all files (including subfolders) and estimates time
 3. **Monitor Progress** - Watch the progress bar, file counter, and time estimates
-4. **Pause if Needed** - Stop for coffee, resume later
+4. **Pause if Needed** - Stop for a hearing, resume later
 5. **Results** - Text files appear in `ocr_results` folder with the same filenames
 
 ---
 
-## Use Cases Beyond Epstein Files
+## Legal Use Cases
 
-This tool is useful for anyone dealing with large document collections:
-
-- **FOIA requests** - Government document dumps
-- **Legal discovery** - Scanned court documents
-- **Academic research** - Historical archives, old newspapers
-- **Personal projects** - Digitizing family photos with text, old letters
-- **Accessibility** - Making scanned documents searchable and screen-reader friendly
-
----
-
-## Screenshots
-
-[Dark mode interface with progress tracking]
-[File list showing completed OCR results]
-[Time estimation display]
+- **Discovery** - Make scanned production sets fully searchable before review
+- **FOIA requests** - Process government document dumps efficiently
+- **Case preparation** - Convert deposition exhibits and court filings to searchable text
+- **Due diligence** - Rapidly process large document sets in transactional matters
+- **Public records** - Search and analyze public court documents and filings
+- **Accessibility** - Make scanned documents screen-reader friendly for clients
 
 ---
 
@@ -120,11 +111,9 @@ This tool is useful for anyone dealing with large document collections:
 
 - [ ] Language selection for non-English documents
 - [ ] Batch processing multiple folders in queue
-- [ ] Cloud storage integration (Google Drive, Dropbox)
 - [ ] OCR quality settings (speed vs accuracy)
 - [ ] Export to searchable PDF instead of just text
-
-Let me know if there's interest!
+- [ ] Bates number detection and indexing
 
 ---
 
@@ -136,27 +125,17 @@ Let me know if there's interest!
 
 ---
 
-## Final Thoughts
+## Privacy Note
 
-Public transparency depends on accessible documents. If documents are locked in scanned images, they're not truly public. OCR is a small step toward making information truly searchable and analyzable.
-
-Hope this helps someone else working through large document releases!
+Everything runs locally on your machine. No documents are uploaded to external servers. This is important for attorney-client privilege and client confidentiality — your files never leave your machine.
 
 ---
 
-**Edit:** Holy inbox! Thanks for the interest. A few common questions:
-
-**Q: Why not use [commercial service]?**
-A: For 2,800 files, commercial OCR would cost $50-500 depending on the service. This is free and runs locally (privacy bonus).
-
 **Q: Tesseract accuracy?**
-A: Surprisingly good for printed text. Handwriting is hit-or-miss. For official documents like court filings, it's excellent.
+A: Very good for printed text such as court filings and typed legal documents. Handwriting is hit-or-miss.
 
 **Q: Can it handle [specific format]?**
-A: Currently supports common image formats (JPG, PNG, TIFF) and PDFs. If there's demand, I can add more formats.
+A: Currently supports common image formats (JPG, PNG, TIFF) and PDFs. Open an issue if you need additional formats.
 
 **Q: Processing speed?**
 A: Depends on your CPU and image quality. M1 Mac processes ~30 files/minute. Older hardware may be slower.
-
-**Q: Is my data safe?**
-A: Everything runs locally on your machine. Nothing uploaded to the cloud. You can read the code - it's ~400 lines of Python.
