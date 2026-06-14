@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-ENHANCED OCR APP
-With dark mode, progress tracking, and pause/resume
+LEGAL DOCUMENT OCR PROCESSOR
+Batch OCR for legal discovery, FOIA processing, and court filing archives.
+Dark mode, progress tracking, pause/resume, local processing only.
 """
 
 from tkinter import *
@@ -18,7 +19,7 @@ class EnhancedOCR:
     def __init__(self):
         # Create window
         self.window = Tk()
-        self.window.title("Enhanced OCR - Epstein Files Processing")
+        self.window.title("Legal Document OCR Processor")
         self.window.geometry("900x700")
         self.window.configure(bg="#1e1e1e")
         
@@ -51,9 +52,9 @@ class EnhancedOCR:
         title_frame = Frame(self.window, bg="#0078d4", pady=20)
         title_frame.pack(fill=X)
         
-        Label(title_frame, text="🔍 Enhanced OCR Processor", 
+        Label(title_frame, text="⚖️ Legal Document OCR Processor",
               font=("Arial", 22, "bold"), bg="#0078d4", fg="white").pack()
-        Label(title_frame, text="Batch OCR with Progress Tracking & Time Estimation", 
+        Label(title_frame, text="Batch OCR for Discovery, FOIA & Court Filings — Local Processing Only",
               font=("Arial", 11), bg="#0078d4", fg="#e0e0e0").pack()
         
         # Main container
@@ -224,7 +225,7 @@ class EnhancedOCR:
     
     def select_folder(self):
         """Select folder with files"""
-        folder = filedialog.askdirectory(title="Select folder with images/PDFs")
+        folder = filedialog.askdirectory(title="Select folder containing legal documents")
         if folder:
             self.folder = folder
             self.folder_label.config(text=folder, fg="white")
