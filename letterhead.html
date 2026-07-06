@@ -1,0 +1,201 @@
+<title>Carlos M. Santini Rodríguez, Esq. — Letterhead</title>
+<style>
+  :root{
+    --ink:#1B2A41;        /* deep navy ink        */
+    --slate:#5A6478;      /* secondary text       */
+    --brass:#9C7C46;      /* restrained accent    */
+    --brass-soft:#B79A6B;
+    --paper:#FCFBF8;      /* warm off-white sheet  */
+    --hair:#E3DED2;       /* hairline divider     */
+    --workspace:#EEECE6;  /* light canvas around sheet */
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){ :root{ --workspace:#15171C; } }
+  :root[data-theme="dark"]{ --workspace:#15171C; }
+  :root[data-theme="light"]{ --workspace:#EEECE6; }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; }
+  body{
+    background:var(--workspace);
+    font-family:var(--sans);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    padding:32px 16px 72px;
+    display:flex; flex-direction:column; align-items:center; gap:22px;
+  }
+
+  /* ---------- workspace toolbar (screen only) ---------- */
+  .toolbar{
+    display:flex; align-items:center; gap:14px;
+    width:min(8.5in,100%);
+    color:var(--slate); font-size:12px; letter-spacing:.04em;
+  }
+  .toolbar .tag{ text-transform:uppercase; letter-spacing:.18em; font-weight:600; }
+  .toolbar .spacer{ flex:1; }
+  .print-btn{
+    font-family:var(--sans); font-size:11px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.16em;
+    color:var(--paper); background:var(--ink);
+    border:none; border-radius:2px; padding:9px 16px; cursor:pointer;
+    transition:background .18s ease;
+  }
+  .print-btn:hover{ background:#243b5c; }
+  .print-btn:focus-visible{ outline:2px solid var(--brass); outline-offset:2px; }
+
+  /* ---------- the sheet ---------- */
+  .sheet{
+    width:8.5in; min-height:11in;
+    background:var(--paper);
+    color:var(--ink);
+    box-shadow:0 1px 2px rgba(20,25,35,.10),0 24px 60px -22px rgba(20,25,35,.45);
+    padding:0.82in 0.92in 0.7in;
+    display:flex; flex-direction:column;
+    position:relative;
+  }
+  /* faint left margin rule, like a ruled legal page */
+  .sheet::before{
+    content:""; position:absolute; left:.62in; top:.7in; bottom:.62in;
+    width:1px; background:linear-gradient(var(--brass-soft),transparent 82%); opacity:.35;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead{ display:flex; align-items:center; gap:20px; }
+  .monogram{
+    flex:none; width:64px; height:64px;
+    border:1px solid var(--brass); position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .monogram::after{
+    content:""; position:absolute; inset:4px; border:1px solid var(--hair);
+  }
+  .monogram span{
+    font-family:var(--serif); font-size:23px; letter-spacing:.06em;
+    color:var(--ink); position:relative; z-index:1; padding-left:.06em;
+  }
+  .id{ display:flex; flex-direction:column; gap:7px; }
+  .name{
+    font-family:var(--serif); font-weight:500;
+    font-size:25px; line-height:1; letter-spacing:.13em;
+    text-transform:uppercase; color:var(--ink); margin:0;
+    text-wrap:balance;
+  }
+  .name .esq{ color:var(--brass); font-style:italic; letter-spacing:.02em; text-transform:none; }
+  .title{
+    font-family:var(--sans); font-size:10.5px; font-weight:600;
+    text-transform:uppercase; letter-spacing:.34em; color:var(--slate);
+    margin:0; padding-left:.05em;
+  }
+
+  .rule{
+    margin-top:20px; height:0; border:0;
+    border-top:1.5px solid var(--brass);
+    position:relative;
+  }
+  .rule::after{
+    content:""; position:absolute; left:0; right:0; top:3px;
+    border-top:.5px solid var(--hair);
+  }
+
+  /* ---------- letter body ---------- */
+  .body{ flex:1; padding-top:46px; }
+  .letter{
+    font-family:var(--serif); color:#26313f;
+    font-size:12.5px; line-height:1.72; max-width:60ch;
+  }
+  .letter .date{ margin:0 0 26px; }
+  .letter .to{ margin:0 0 26px; white-space:pre-line; }
+  .letter p{ margin:0 0 15px; }
+  .letter .salutation{ margin-bottom:18px; }
+  .sign{ margin-top:34px; }
+  .sign .close{ margin:0 0 40px; }
+  .sign .who{ font-weight:600; letter-spacing:.02em; margin:0; }
+  .sign .who-title{ font-family:var(--sans); font-size:10px; text-transform:uppercase; letter-spacing:.2em; color:var(--slate); margin:5px 0 0; }
+
+  /* placeholder note appears on screen only, never prints */
+  .placeholder-note{
+    font-family:var(--sans); font-size:9.5px; color:var(--slate);
+    text-transform:uppercase; letter-spacing:.18em; opacity:.6;
+    margin:6px 0 0;
+  }
+
+  /* ---------- footer contact band ---------- */
+  .footer{
+    margin-top:auto; padding-top:16px;
+    border-top:.5px solid var(--hair);
+    display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px;
+    font-family:var(--sans); font-size:9.5px; font-weight:500;
+    text-transform:uppercase; letter-spacing:.15em; color:var(--slate);
+  }
+  .footer .brass-dot{ color:var(--brass); font-weight:700; }
+  .footer a{ color:var(--slate); text-decoration:none; }
+  .footer .fx{ letter-spacing:.02em; text-transform:none; font-weight:600; color:#3a4658; }
+
+  /* ---------- print ---------- */
+  @page{ size:letter; margin:0; }
+  @media print{
+    body{ background:#fff; padding:0; gap:0; }
+    .toolbar{ display:none !important; }
+    .placeholder-note{ display:none !important; }
+    .sheet{ box-shadow:none; width:100%; min-height:100vh; }
+    .sheet::before{ opacity:.28; }
+  }
+
+  @media (max-width:8.6in){
+    .sheet{ width:100%; padding:7% 7% 5.5%; min-height:0; }
+    .sheet::before{ display:none; }
+  }
+</style>
+
+<div class="toolbar">
+  <span class="tag">Letterhead</span>
+  <span>US Letter · print-ready</span>
+  <span class="spacer"></span>
+  <button class="print-btn" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<article class="sheet" aria-label="Letterhead for Carlos M. Santini Rodríguez, Esq.">
+
+  <header class="masthead">
+    <div class="monogram" aria-hidden="true"><span>CSR</span></div>
+    <div class="id">
+      <h1 class="name">Carlos&nbsp;M.&nbsp;Santini&nbsp;Rodríguez<span class="esq">, Esq.</span></h1>
+      <p class="title">Attorney &amp; Counselor at Law</p>
+    </div>
+  </header>
+
+  <hr class="rule" />
+
+  <section class="body">
+    <div class="letter">
+      <p class="date">July 6, 2026</p>
+      <p class="to">[Recipient Name]
+[Title / Organization]
+[Street Address]
+[City, State ZIP]</p>
+
+      <p class="salutation">Dear [Recipient]:</p>
+      <p>This letterhead is ready for use. Replace this block with the body of your correspondence—the masthead, margin, and footer will remain fixed on every page you print or export to PDF.</p>
+      <p>The layout is set to standard U.S. Letter dimensions with legal-standard margins, so it may be used directly for formal correspondence, engagement letters, and filings.</p>
+
+      <div class="sign">
+        <p class="close">Respectfully,</p>
+        <p class="who">Carlos M. Santini Rodríguez, Esq.</p>
+        <p class="who-title">Attorney &amp; Counselor at Law</p>
+      </div>
+      <p class="placeholder-note">Sample body — not printed guidance; edit freely.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>PO Box 30309</span>
+    <span class="brass-dot">·</span>
+    <span>San Juan, PR 00929-0544</span>
+    <span class="brass-dot">·</span>
+    <span class="fx">Tel. 787.636.0770</span>
+    <span class="brass-dot">·</span>
+    <span><a href="mailto:carsantini@gmail.com">carsantini@gmail.com</a></span>
+  </footer>
+
+</article>
