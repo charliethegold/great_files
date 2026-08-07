@@ -125,6 +125,48 @@ Aquí está el punto técnico decisivo:
 
 ---
 
+## 7. Ejemplo numérico ilustrativo (venta de acciones estadounidenses)
+
+> **Advertencia:** cifras y tasas **ilustrativas**, redondeadas, a la fecha del memo. Se ignoran impuestos estatales de EE. UU. y detalles de tipo de cambio (se asume £1 = $1.25). Las ganancias se miden por separado en cada país en su propia moneda; en la realidad el resultado varía por tramo de ingreso, fecha de compra/venta, movimiento GBP/USD y presupuestos vigentes. **No es un cálculo real.**
+
+**Supuestos comunes:** contribuyente soltero, residente establecido en UK, *higher-rate taxpayer*. Vende acciones de una empresa estadounidense mantenidas > 1 año, con una **ganancia de £80,000 ≈ $100,000**. Ya usó otras exenciones. La acción es de **fuente estadounidense** para EE. UU.
+
+### Escenario A — Residente establecido en UK (aplican ambos países)
+
+| Paso | Cálculo | Resultado |
+|---|---|---|
+| **UK CGT** (derecho primario, Art. 13) | (£80,000 − £3,000 exención anual) × 24 % | **£18,480** (≈ $23,100) |
+| **US — impuesto regular LT** | $100,000 × 20 % (tramo alto) | $20,000 |
+| **US — NIIT** | $100,000 × 3.8 % | $3,800 |
+| **US tentativo antes de crédito** | $20,000 + $3,800 | $23,800 |
+| **Foreign Tax Credit** (UK re-*sourced by treaty*) | Acredita ~$23,100 de UK contra los **$20,000** de impuesto regular | −$20,000 (queda ~$3,100 de crédito sobrante/arrastrable) |
+| **US regular tras crédito** | $20,000 − $20,000 | **$0** |
+| **US NIIT (no acreditable)** | El FTC **no** compensa el NIIT | **$3,800** |
+
+**Total mundial ≈ £18,480 (UK) + $3,800 (US NIIT) ≈ $23,100 + $3,800 = ~$26,900** sobre $100,000 → **≈ 26.9 % efectivo.**
+
+- **Lo que NO ocurre:** sumar 24 % (UK) + 23.8 % (US) = 47.8 % → $47,800. El crédito **impide** esa doble tributación.
+- **Lo que sí queda:** el impuesto es esencialmente **el británico (el más alto)** **+ la "fuga" del NIIT de $3,800** que ningún crédito neutraliza.
+- Si en cambio la tasa **estadounidense** fuera la mayor, se pagaría a UK su impuesto y a EE. UU. **solo la diferencia** (más el NIIT).
+
+### Escenario B — Nuevo residente bajo el régimen FIG (primeros 4 años)
+
+La ganancia por acciones estadounidenses es **ganancia extranjera** para UK. Si elige la exención **FIG**:
+
+| Concepto | Resultado |
+|---|---|
+| **UK CGT** | **£0** (ganancia extranjera exenta bajo FIG) |
+| **US regular LT** | $100,000 × 20 % = **$20,000** |
+| **US NIIT** | $100,000 × 3.8 % = **$3,800** |
+| **Total** | **$23,800 → 23.8 % efectivo**, todo a EE. UU. |
+
+- Sin impuesto UK, **no hay crédito extranjero que aplicar**: EE. UU. es el único que grava (asumiendo que la ganancia no pierde la protección FIG).
+- **Trade-off del FIG:** al elegirlo, normalmente se **pierde** la *Personal Allowance* y el *Annual Exempt Amount* de CGT para ese año; conviene modelar si compensa.
+
+**Lectura clave de ambos escenarios:** el ciudadano rara vez paga "el doble"; paga **el mayor de los dos regímenes**, con el **NIIT como excepción** que puede añadir una capa irrecuperable, y con el **FIG** desplazando el impuesto íntegramente a EE. UU. durante los primeros años.
+
+---
+
 ## Fuentes
 
 - IRS — Foreign Tax Credit: https://www.irs.gov/individuals/international-taxpayers/foreign-tax-credit
