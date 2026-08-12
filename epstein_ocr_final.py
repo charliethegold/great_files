@@ -262,6 +262,25 @@ class EnhancedOCR:
         minutes = int((seconds % 3600) // 60)
         secs = int(seconds % 60)
         return f"{hours}:{minutes:02d}:{secs:02d}"
+
+    def assess_ocr_confidence(self, text):
+        """Flag likely-bad Tesseract output so it can be re-run through Claude"""
+        stripped = text.strip()
+
+        if len(stripped) < 20:
+            return True, "very little text extracted"
+
+        readable = sum(1 for c in stripped
+                        if c.isalnum() or c.isspace() or c in ".,;:!?'\"-()[]/\\%$&")
+        garbage_ratio = 1 - (readable / len(stripped))
+        if garbage_ratio > 0.3:
+            return True, f"{garbage_ratio:.0%} unrecognized/garbled characters"
+
+        words = [w for w in stripped.split() if len(w) >= 2 and any(c.isalpha() for c in w)]
+        if len(words) < 5:
+            return True, "too few recognizable words"
+
+        return False, ""
     
     def add_to_file_list(self, message):
         """Add message to completed files list"""
@@ -335,8 +354,9 @@ class EnhancedOCR:
         
         count = 0
         total_processing_time = 0
-        
+
         skipped = 0
+        self.flagged_files = []
         
         for idx, file in enumerate(files, 1):
             # Check if stopped
@@ -391,7 +411,11 @@ class EnhancedOCR:
                 # Save result
                 with open(output_file, 'w', encoding='utf-8') as f:
                     f.write(text)
-                
+
+                is_low_confidence, flag_reason = self.assess_ocr_confidence(text)
+                if is_low_confidence:
+                    self.flagged_files.append((str(file), flag_reason))
+
                 file_time = time.time() - file_start
                 total_processing_time += file_time
                 count += 1
@@ -416,36 +440,58 @@ class EnhancedOCR:
                     self.est_remaining_label.config(text=self.format_time(est_remaining_secs))
                 
                 # Add to file list
-                self.add_to_file_list(f"✅ [{count}/{total_files}] {file.name} ({file_time:.1f}s)")
-                
+                if is_low_confidence:
+                    self.add_to_file_list(
+                        f"⚠️  [{count}/{total_files}] {file.name} ({file_time:.1f}s) - flagged: {flag_reason}")
+                else:
+                    self.add_to_file_list(f"✅ [{count}/{total_files}] {file.name} ({file_time:.1f}s)")
+
                 self.window.update()
-                
+
             except Exception as e:
                 self.add_to_file_list(f"❌ Error: {file.name} - {str(e)}")
-        
+
+        # Write out the list of low-confidence files for optional Claude re-processing
+        if self.flagged_files:
+            flagged_path = output_folder / "flagged_for_review.txt"
+            with open(flagged_path, 'w', encoding='utf-8') as f:
+                f.write("# Files flagged as low-confidence OCR - candidates for re-processing with claude_reocr.py\n")
+                f.write("# Format: <source file path>\\t<reason>\n")
+                for flagged_path_str, flagged_reason in self.flagged_files:
+                    f.write(f"{flagged_path_str}\t{flagged_reason}\n")
+
         # Done
         total_time = time.time() - start_time
-        
+
         actually_processed = count - skipped
         
-        self.current_file_label.config(text=f"✅ Complete! Processed {actually_processed} new files, {skipped} already done")
+        self.current_file_label.config(
+            text=f"✅ Complete! Processed {actually_processed} new files, {skipped} already done, "
+                 f"{len(self.flagged_files)} flagged for review")
         self.progress_bar['value'] = 100
         self.progress_percentage.config(text="100%")
         self.est_remaining_label.config(text="0:00:00")
-        
+
         # Reset buttons
         self.start_button.config(state=NORMAL)
         self.pause_button.config(state=DISABLED)
         self.stop_button.config(state=DISABLED)
         self.processing = False
-        
+
+        flagged_note = (
+            f"\n\nLow-confidence files listed in:\n{output_folder / 'flagged_for_review.txt'}\n"
+            f"Re-run those through claude_reocr.py for a second pass."
+            if self.flagged_files else ""
+        )
         messagebox.showinfo("Complete!",
                            f"OCR Processing Complete!\n\n"
                            f"Total files: {total_files}\n"
                            f"Newly processed: {actually_processed}\n"
                            f"Already completed (skipped): {skipped}\n"
+                           f"Flagged for review: {len(self.flagged_files)}\n"
                            f"Total time: {self.format_time(total_time)}\n"
-                           f"Results saved to:\n{output_folder}")
+                           f"Results saved to:\n{output_folder}"
+                           f"{flagged_note}")
 
 # Run the app
 if __name__ == '__main__':

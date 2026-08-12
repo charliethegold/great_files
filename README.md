@@ -29,6 +29,8 @@ So I built this tool using Python and Tesseract OCR.
 
 ✅ **Detailed Logging** - Scrolling list of completed files with processing time
 
+✅ **Low-Confidence Flagging** - Automatically flags pages where Tesseract likely got it wrong (garbled text, handwriting, poor scans) so you can selectively re-run just those through Claude for a second, more accurate pass
+
 ✅ **Multi-Format Support** - JPG, PNG, PDF, TIFF, and more
 
 ---
@@ -93,6 +95,24 @@ The Epstein files are ~2,800+ scanned documents. At ~2-5 seconds per file, that'
 3. **Monitor Progress** - Watch the progress bar, file counter, and time estimates
 4. **Pause if Needed** - Stop for coffee, resume later
 5. **Results** - Text files appear in `ocr_results` folder with the same filenames
+
+---
+
+## Second Pass with Claude (Optional)
+
+Tesseract does character-level pattern matching with no understanding of context, so it struggles with poor scans, handwriting, stamps, and unusual layouts. Every run flags pages it's likely to have gotten wrong into `ocr_results/flagged_for_review.txt`, so you don't have to eyeball thousands of files to find the bad ones.
+
+To re-run just those flagged pages through Claude's vision model for a more accurate transcription:
+
+```bash
+pip install anthropic
+export ANTHROPIC_API_KEY=sk-...
+python3 claude_reocr.py /path/to/your/folder
+```
+
+This overwrites the `.txt` output for each flagged file with Claude's transcription, keeping the original Tesseract output alongside as `*.tesseract.txt` so you can compare. Since only a small fraction of files are typically flagged, this keeps API costs and processing time low compared to running every file through Claude.
+
+Set `CLAUDE_OCR_MODEL` to override the default model if needed.
 
 ---
 
